@@ -16,3 +16,16 @@
 .box2{
     padding:20px;
 }
+
+.box3{
+    width:200px;
+    height: 150px;
+    background: red;
+}
+
+.box4{
+    width: 250px;
+    height: 180px;
+    background-color: blue;
+    color: white;
+}
