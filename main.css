@@ -1,0 +1,45 @@
+/* 기본 브라우저가 제공하는 margin에 대해 초기화 */
+body{
+    margin:0;
+    padding:0;
+}
+/* 요소에는 기본값이 존재 */
+/* font-size: 16px */
+/* width:auto, height: auto */
+.header{
+    width: auto;
+    height: auto;
+    background-color: yellowgreen;
+}
+.container{
+    width: 980px;
+    margin: auto;
+    background-color: tomato;
+}
+.container-left{
+
+}
+.logo{
+    float: left;
+    margin-right:5px;
+}
+.logo img{
+    /* img에 생긴 여백을 사라지게 한다! */
+    display: block;
+}
+.menu{
+    float: left;
+}
+.menu-item{
+    /* float: 요소를 띄워서 수평형태를 만듬 */
+    /* 따라서 배경에 포함 되지 못하는 문제 발생 */
+    /* 이것을 해결해주는 것이 clearfix!!! */
+    float:left;
+    margin-right: 10px;
+}
+/* ::가상 선택 요소 */
+.clearfix::after{
+    content: "";
+    display:block;
+    clear:both;
+}
