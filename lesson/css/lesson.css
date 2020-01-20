@@ -1,0 +1,21 @@
+/* 태그로 찾기: div요소는 글자색이 빨강이야*/
+div{
+    color: red;
+}
+/* p태그는 글자색이 보라색이야 */
+p{
+    color: blueviolet;
+}
+
+/* 태그의 이름만 가지고 원하는 특정한 것을 찾기 어려울 수 있다. */
+/* Class로 찾기! */
+/* title이라는 이름을 가진 요소를 찾아서 적용 */
+/* class 는 별칭 */
+.title{
+    color:olivedrab;
+}
+
+.main-text{
+    color: blue;
+}
+
