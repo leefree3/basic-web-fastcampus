@@ -9,15 +9,18 @@ body{
 .header{
     width: auto;
     height: auto;
-    background-color: yellowgreen;
+    background-color: white;
+    border-bottom: 1px solid lightgray;
 }
 .container{
     width: 980px;
     margin: auto;
-    background-color: tomato;
+    /* padding: 20px 0; */
 }
 .container-left{
-
+    /* 최적화를 위해서는, padding은 하위 요소에 넣어주는게 좋다. */
+    padding-top: 20px;
+    padding-bottom: 20px;
 }
 .logo{
     float: left;
@@ -35,7 +38,8 @@ body{
     /* 따라서 배경에 포함 되지 못하는 문제 발생 */
     /* 이것을 해결해주는 것이 clearfix!!! */
     float:left;
-    margin-right: 10px;
+    /* margin-right: 10px; */ 
+    padding: 8px 10px;
 }
 /* ::가상 선택 요소 */
 .clearfix::after{
