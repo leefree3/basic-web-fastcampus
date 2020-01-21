@@ -1,0 +1,23 @@
+body{
+    margin:0;
+    padding:0;
+}
+
+/* inline 요소의 margin, padding은 좌, 우만 먹는다. */
+div{
+    background: red;
+    width: 120px;
+    height: 80px;
+    display: inline;   
+}
+
+/* display 속성: inline을 block으로, block을 inline으로 바꿔 사용가능 */
+/* 블록 요소는 display기본값: block */
+div, p, h1{
+    display: block;
+}
+
+/* 인라인 요소는 display 기본값: inline */
+span, img{
+    display: inline;
+}
