@@ -1,0 +1,58 @@
+header{
+    background: thistle;
+    margin: 10px;
+    padding: 20px;
+}
+header nav{
+
+}
+header nav ul{
+    display: flex;
+}
+header nav ul li{
+    list-style: none;
+    margin:10px;
+}
+main{
+    display: flex;
+}
+section{
+    width: 70%;
+    background-color: rosybrown;
+    margin: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+section h1{
+
+}
+article{
+    background: pink;
+    margin-bottom: 10px;
+    padding:10px;
+}
+article h2{
+
+}
+article p{
+
+}
+aside{
+    width:30%;
+    background: plum;
+    margin:10px;
+    padding: 20px;
+   /*박스의 크기를 테두리 기준으로 정함*/
+    box-sizing: border-box;
+}
+footer{
+    background-color: palevioletred;
+    margin:10px;
+    padding: 20px;
+}
+footer address{
+
+}
+footer address a{
+    display: block;
+}
