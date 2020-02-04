@@ -2,14 +2,131 @@
 <html lang="ko">
 <head>
     <meta charset="UTF-8">
-    <title>Form (양식) </title>
+    <title>양식 태그 </title>
     <link rel="stylesheet" href="./css/lesson14.css">
 </head>
 <body>
-    <form action="/login" method="GET" autocomplete="on" target="_self" novalidate >
-        <input type="email" name="email">
-        <input type="password" name="password">
-        <button type="submit">로그인</button>
+    <p>Email, password, submit</p>
+    <form action="/login" id="login-form" method="GET" autocomplete="on" target="_self" novalidate >
+        <input type="email" autofocus name="id">
+        <input type="password" maxlength="6" name="pw"><br><br>
+        <input type="submit" value="로그인">
+        <input type="reset" value="초기화"><br><br>
+        <!-- 위 input과 동일하게 작동 -->
+        <button type="submit">제출</button>
+        <button type="reset">초기화</button>
     </form>
+    <hr>
+    <!-- form 태그 밖에서도 input 사용할 수 있다. (form 속성 사용, 아래)-->
+    <p>text & 폼테그 밖에 있어도 적용됨!</p>
+    <input type="text" form="login-form" maxlength="6">
+    <hr>
+    <!-- form 태그 밖에 있어서 사용불가(아래) -->
+    <input type="text" maxlength="6">
+
+    <p>number</p>
+    <input type="number" value="1234">
+    <input type="number" value="1234" readonly>
+    <input type="number" value="1234" disabled>
+    <input type="number" value="1234" placeholder="숫자를 입력하세요">
+    <input type="number" max="8" min="4" step="2">
+    <hr>
+    <p>check box</p>
+    <input type="checkbox" checked><!-- checked 속성은 미리 체크된 상태로 보임 -->
+    <hr>
+    <p>file</p>
+    <input type="file" multiple>
+    <hr>
+    <p>이미지(Image)</p><!-- 제출용도로 사용가능 -->
+    <form action="/login">
+        <input id="img" type="image" src="images/heropy.png" alt="heropy">
+    </form>
+    <hr>
+    <p>radio 버튼</p><!-- 택1 -->
+    <input type="radio" name="radio1">
+    <input type="radio" name="radio1" checked>
+    <input type="radio" name="radio1">
+    <hr>
+    <!-- 라벨 가능 요소를 참조 -->
+    <p>label태그</p>
+    <input type="checkbox" id="user-agreement">
+    <labe l for="user-agreement" >동의하십니까?</label>
+    <!-- 라벨 가능 요소를 포함 -->
+    <label><input type="checkbox">동의하십니까?</label>
+    <br>
+    <!-- 검색 클릭시 input창 선택됨 -->
+    <label>
+        검색 <input type="search">
+    </label>
+    <hr>
+    <!-- Button태그 -->
+    <p>Button 태그</p>
+    <button onclick="doit()">클릭하세요!</button>
+    <script>
+        function doit() {
+            alert('클릭했습니다!');
+        }
+    </script>
+    <hr>
+    <!-- TextArea -->
+    <p>TextArea</p>
+    <textarea name="" id="" placeholder="설명을 입력하세요!" cols="30" rows="6"></textarea>
+    <hr>
+    <!-- 같은 목적의 양식을 그룹화(<fieldset>) 하여 제목(<legend>)을 지정 -->
+    <p>fieldset & legend</p>
+    <form>
+        <fieldset><!--속성: disabled, form, name  -->
+            <legend>Coffee Size</legend>
+            <label>
+                <input type="radio" name="size" value="tall" />
+                Tall
+            </label>
+            <label>
+                <input type="radio" name="size" value="grande" />
+                Grande
+            </label>
+            <label>
+                <input type="radio" name="size" value="venti" />
+                Venti
+            </label>
+        </fieldset>
+        </form>
+    <hr>
+    <!-- <select>, <datalist>, <optgroup>, <option> -->
+    <p>select, optgroup, option</p>
+    <select name="fruits"><!-- select 속성:  size="3",  multiple , disabled-->
+        <optgroup label="like">
+            <option label="Apple" value="Apple">
+            <option value="Banana">Banana</option>
+            <option value="Mango">Mango</option>
+        </optgroup>
+        <optgroup label="dislike">
+            <option value="Orange" selected>Orange</option><!-- selected: 우선 보이는 글씨 -->
+            <option value="Fineapple">Fineapple</option>
+        </optgroup>
+    </select>
+    <hr>
+    <p>datalist</p>
+    <input type="text" list="fruits">
+    <datalist id="fruits">
+        <option>Apple</option>
+        <option>Orange</option>
+        <option>Banana</option>
+        <option>Mango</option>
+        <option>Fineapple</option>
+    </datalist>
+    <!-- progress: 로딩바, 가변하기 때문에 보통은 js와 같이 많이 쓰임 -->
+    <hr>
+    <p>Progress</p>
+    <progress value="0" max="100">70%</progress><br>
+    <progress value="70" max="100">70%</progress><br>
+    <progress value="0.7">70%</progress>
+    <script>
+        const progress = document.querySelector('progress');
+        const interval = setInterval(function(){
+            progress.value += 10;
+            if(progress.value>=100) clearInterval(interval);
+        },1000)
+    </script>
 </body>
 </html>
