@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>전역속성</title>
+    <link rel="stylesheet" href="./css/lesson15..css">
+    <style>
+        .section{
+            height: 50px;
+            border:1px solid red;
+            background-color: blue;
+        }
+        #section{
+            height: 200px;
+            background-color: green;
+        }
+    </style>
+</head>
+<body>
+    <hr>   
+    <p>calsss, id, style속성</p>
+    <div class="section"></div>
+    <div class="section"></div>
+    <div class="section"></div>
+    <div class="section" style="background-color: greenyellow;"></div>
+    <div class="section"></div>
+    <div id="section"></div>
+    <script>
+        const section = document.querySelector('.section');
+        const sectionId = document.getElementById('section');
+    </script>
+    <hr>
+    <p>title 속성</p>
+    <h2 title="이 부분은 제목 2 입니다">제목2</h2>
+    <a href="https://google.com" title="google.com">Google</a>
+    <div title="div 태그 입니다.">DIV</div>
+    <hr>
+    <p>lang 속성 - 되도록 html(전역) 에 알려서 쓴다.</p>
+    <hr>
+    <!-- data-*속성: 사용자 정의 데이터 속성 지정
+    HTML의 JavaScript에서 이용할 수 있는 데이터 (정보)를 저장하는 용도로 사용 -->
+    <p>data-*속성</p>
+    <div id ="me" data-my-name="MINI" data-my-age="29">MINI</div>
+    <script>
+        const me = document.getElementById('me');
+        console.log(me.dataset.myName)
+        console.log(me.dataset.myAge)/* html에서는 dash표기법을 사용했지만, JS는 카멜표기법을 사용 */
+    </script>
+    <hr>
+    <p>draggable속성</p><!-- true, false, default는 true -->
+    <div draggable="true">The element to drag.</div>
+    <hr>
+    <p>hidden속성: 요소를 숨김</p>
+    <form id="hidden-form" action="/form-action" hidden>
+        <!-- 숨겨진 양식들.. -->
+        <input type="text" name="id" value="minimi">
+    </form>
+    <button form="hidden-form" type="submit">전송</button>
+    <br>
+    <hr>
+    <!-- tabindex -->
+    <!-- html이 작성되어 있는 순서 그대로 두는게 좋다 => tabindex 1이상 쓰지 않는게 좋다. -->
+    <p>tabindex</p>
+    <input type="text" value="1" tabindex="1">    
+    <input type="text" value="2" tabindex="2">    
+    <div tabindex="0">2.5</div>
+    <input type="text" value="3" tabindex="3">    
+    <input type="text" value="4" tabindex="-1">    
+    <input type="text" value="5" tabindex="5">    
+</body>
+</html>
