@@ -6,6 +6,6 @@
 4. Markdown
 5. Git Site제작하기
 6. JavaScript
-7. React (+
+7. React
 8. TypeScript
 9. Webpack
