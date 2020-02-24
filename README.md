@@ -9,3 +9,4 @@
 7. React
 8. TypeScript
 9. Webpack
+10. Git 사용방법 익히기
