@@ -15,7 +15,7 @@ a{
     background: #eee linear-gradient(to bottom, #fcfcfc, #eee);
     border: 1px solid #d5d5d5;
     border-radius: 4px;
-    display: inline-flex;
+    display: flex;
     align-items: center;
     padding: 0 12px;
     font-size: 14px;
@@ -186,6 +186,17 @@ header .sub-menu li a{
 }
 header .sub-menu li a:hover{
   color: #4078c0;
+}
+#toggle-btn{
+  display: none;
+  background: url('../img/toggle-btn.svg');
+  width: 18px;
+  height: 24px;
+  position:absolute;
+  top: 16px;
+  right: 20px;
+  cursor: pointer;
+  text-indent: -9999px;
 }
 
 /* VISUAL */
@@ -417,3 +428,13 @@ footer .logo{
 footer .logo svg:hover{
   fill: #4078c0;
 }
+
+
+/* 반응형(MEDIA) - medium device(태블릿) */
+/* screen and(미디어 특성) 생략 가능 */
+/* @media (max-width:1024px) {
+  html에서 link 파일로 정의
+  속성 media=screen and"(max-width:1024px)"
+  을 사용해서 정의했다.
+} */
+
