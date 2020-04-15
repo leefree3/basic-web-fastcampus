@@ -1,0 +1,49 @@
+/* COMMON */
+.summary__title{
+    /* 선택자 우선순위 고려, !important 가 붙으면 무한대로 젤 우선!!! */
+    font-size: 34px !important;
+}
+.summary__description{
+    font-size: 22px;
+}
+
+/* FEATURE */
+.section--feature .tiles li{
+    width: 100%;
+    border-right: none;
+    border-bottom: 1px solid #e5e5e5;
+}
+
+/* WHERE IS */
+#map{
+    /* auto != 100% */
+    /* 부모요소 inner에 영향을 받게 되고, 20px 여백 조정하기 위해 -20px 지정 */
+    /* w,h의 초기값은 auto입니당~!? 기억하자!? */
+    width: auto;
+    margin: 40px -20px 0 -20px;
+    border-left: none;
+    border-right: none;
+}
+
+/* PRICING */
+.section--pricing .card{
+    display: block;
+}
+.section--pricing .card .cell2{
+    border-left: none;
+    border-top: 1px solid #e5e5e5;
+}
+
+/* FOOTER */
+footer .site-links{
+    float: none;
+    /* justify-content: center; */
+    text-align: center;
+    display: block;
+}
+footer .site-links:first-child{
+    margin-bottom: 20px;
+}
+footer .site-links li{
+    display: inline;
+}
