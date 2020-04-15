@@ -1,0 +1,18 @@
+/* 브라우저가 가진 기본 값을 초기화 하고 스타일을 입히자! */
+/* body에 margin, padding값을 0으로 할 수도 있고 */
+/*
+body{
+    margin: 0;
+    padding: 0;
+}
+*/
+/* Reset.css를 import를 걸어서 초기화 할 수 있다!!!!! */
+/* Reset.css cdn 검색 */
+
+.box{
+    /* w:300 */
+    width: 300px;
+    height: 400px;
+    background-color: tomato;
+}
+

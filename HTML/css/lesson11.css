@@ -1,0 +1,37 @@
+b{
+    font-weight: normal;
+}
+
+em{
+    /*font-style: normal;
+    font-weight: bold;*/
+    color:brown;
+}
+
+u{
+    color:blue;
+}
+span{
+    /* text-decoration: underline; */
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+}
+code{
+    color: orange;
+    background: lightgray;
+    padding: 3px;
+    border: 1px solid orange;
+}
+
+kbd{
+    padding: 0 3px;
+    border-radius: 3px;
+    border-top: 2px solid rgb(240,240,40);
+    border-bottom: 2px solid rgb(140,240,240);
+    border-right: 2px solid rgb(240,140,240);
+    border-left: 2px solid rgb(240,240,140);
+}
+p{
+    line-height: 30px;
+}
