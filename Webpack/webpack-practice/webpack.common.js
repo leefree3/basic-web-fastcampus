@@ -2,8 +2,9 @@ const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
 const { CleanWebpackPlugin } = require("clean-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
-const OptimizeCssAssetsPlugin = require("optimize-css-assets-webpack-plugin");
-const TerserWebpackPlugin = require("terser-webpack-plugin");
+const webpack = require("webpack");
+
+const isProduction = process.env.NODE_ENV == "PRODUCTION";
 
 module.exports = {
   entry: "./index.js",
@@ -44,47 +45,25 @@ module.exports = {
   //외부저장소에서 사용된 plugt-in
   plugins: [
     new MiniCssExtractPlugin({ filename: "[contenthash].css" }),
-    new OptimizeCssAssetsPlugin({
-      assetNameRegExp: /\.css$/g,
-      cssProcessor: require("cssnano"),
-      cssProcessorPluginOptions: {
-        preset: ["default", { discardComments: { removeAll: true } }],
-      },
-      canPrint: true,
-    }),
     new HtmlWebpackPlugin({
       title: "Webpack",
       template: "./template.hbs",
       meta: {
         viewport: "width=device-width, initail-scale=1.0",
       },
-      minify: {
-        collapseWhitespace: true,
-        useShortDoctype: true,
-        removeScriptTypeAttributes: true,
-      },
+      // production일때는 압축(compressor), 개발환경일때는 압축안해!
+      minify: isProduction
+        ? {
+            collapseWhitespace: true,
+            useShortDoctype: true,
+            removeScriptTypeAttributes: true,
+          }
+        : false,
     }),
     new CleanWebpackPlugin(),
+    new webpack.DefinePlugin({
+      //true일 때 production 빌드에서 사용.
+      IS_PRODUCTION: isProduction,
+    }),
   ],
-  optimization: {
-    runtimeChunk: {
-      name: "runtime",
-    },
-    splitChunks: {
-      cacheGroups: {
-        commons: {
-          test: /[\\/]node_modules[\\/]/,
-          name: "venders",
-          chunks: "all",
-        },
-      },
-    },
-    minimize: true,
-    minimizer: [
-      new TerserWebpackPlugin({
-        cache: true,
-      }),
-    ],
-  },
-  mode: "none",
 };

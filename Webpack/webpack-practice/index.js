@@ -1,5 +1,6 @@
 import "normalize.css";
 import styles from "./index.css";
+import $ from "jquery";
 
 function component() {
   const element = document.createElement("div");
@@ -13,3 +14,5 @@ function component() {
 }
 
 document.body.appendChild(component());
+console.log($(`.${styles.helloWebpack}`).length);
+console.log(`IS_PRODUCTION MODE: ${IS_PRODUCTION}`);

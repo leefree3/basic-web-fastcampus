@@ -4,21 +4,32 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "webpack"
+    "start": "cross-env NODE_ENV=DEVELOPMENT webpack-dev-server --config webpack.dev.js",
+    "dev": "cross-env NODE_ENV=DEVELOPMENT webpack --config webpack.dev.js",
+    "build": "cross-env NODE_ENV=PRODUCTION webpack --config webpack.prod.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "clean-webpack-plugin": "^3.0.0",
     "css-loader": "^3.5.2",
+    "cssnano": "^4.1.10",
     "handlebars": "^4.7.6",
     "handlebars-loader": "^1.7.1",
     "html-webpack-plugin": "^4.2.0",
+    "mini-css-extract-plugin": "^0.9.0",
+    "optimize-css-assets-webpack-plugin": "^5.0.3",
     "style-loader": "^1.1.4",
+    "terser-webpack-plugin": "^2.3.5",
     "webpack": "^4.42.1",
-    "webpack-cli": "^3.3.11"
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3",
+    "webpack-merge": "^4.2.2"
   },
   "dependencies": {
+    "cross-env": "^7.0.2",
+    "jquery": "^3.5.0",
     "normalize.css": "^8.0.1"
   }
 }
