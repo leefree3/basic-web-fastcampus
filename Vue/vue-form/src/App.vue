@@ -1,5 +1,6 @@
 <template>
   <div>
+    <progressBar></progressBar>
     <form v-on:submit.prevent="submitForm">
       <div>
         <label for="username">ID:</label>
@@ -26,8 +27,8 @@
 </template>
 
 <script>
+import ProgressBar from "@/components/ProgressBar.vue";
 import ToastPopup from "@/components/ToastPopup.vue";
-
 //이메일 형식 체크 함수
 function validateEmail(email) {
   // eslint 때문에 정규식에 에러가 발생해서 참죄: https://github.com/eslint/eslint/issues/6148
@@ -38,7 +39,8 @@ function validateEmail(email) {
 export default {
   components: {
     // 'ToastPopup':ToastPopup
-    ToastPopup //ES6 에서 Object의 key, value가 같으면 literal
+    ToastPopup, //ES6 에서 Object의 key, value가 같으면 literal
+    ProgressBar
   },
   data() {
     return {
@@ -79,8 +81,15 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 /* scope: 컴포넌트에만 css를 입히는 모드 */
+/* 전역으로 쓰기 위해 App.vue에서는 scoped 제외 */
+body {
+  margin: 0;
+}
+form {
+  padding: 5px 10px;
+}
 .username-input {
   outline: none;
 }
