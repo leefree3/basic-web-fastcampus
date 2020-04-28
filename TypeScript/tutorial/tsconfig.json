@@ -11,7 +11,7 @@
     // removeComments: 브라우저 상에 주석제거
     // noImplicitAny: '함수의 파라미터의 타입을 지정하지 않으명 어떤 타입이던(any) 상관없이 쓸 수 있다'를 방지
     "compilerOptions": {
-        "module": "commonjs",
+        "module": "es6",
         "rootDir": "src",
         "outDir": "dist",
         "target": "es6",
