@@ -15,5 +15,4 @@ function getDiscount(v) {
             return 10;
     }
 }
-console.log(StarbucksGrade.GREEN === "GREEN");
 //# sourceMappingURL=enum.js.map
