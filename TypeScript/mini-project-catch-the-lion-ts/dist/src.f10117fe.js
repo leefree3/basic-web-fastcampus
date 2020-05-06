@@ -117,23 +117,238 @@ parcelRequire = (function (modules, cache, entry, globalName) {
   }
 
   return newRequire;
-})({"src/Game.ts":[function(require,module,exports) {
+})({"src/Board.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
-}); // named export (이름으로 내보내는 방법)
+});
+
+var Cell =
+/** @class */
+function () {
+  function Cell(position, piece) {
+    this.position = position;
+    this.piece = piece;
+    this.isActive = false;
+    this._el = document.createElement("div");
+
+    this._el.classList.add("cell");
+  }
+
+  Cell.prototype.put = function (piece) {
+    this.piece = piece;
+  };
+
+  Cell.prototype.getPiece = function () {
+    return this.piece;
+  };
+
+  Cell.prototype.active = function () {
+    this.isActive = true;
+  };
+
+  Cell.prototype.deactive = function () {
+    this.isActive = false;
+  };
+
+  Cell.prototype.render = function () {
+    if (this.isActive) {
+      this._el.classList.add("active");
+    } else {
+      this._el.classList.remove("active");
+    }
+
+    this._el.innerHTML = this.piece ? this.piece.render() : "";
+  };
+
+  return Cell;
+}();
+
+exports.Cell = Cell;
+
+var Board =
+/** @class */
+function () {
+  function Board() {
+    this.cells = [];
+    this._el = document.createElement("div");
+    this._el.className = "board";
+
+    for (var row = 0; row < 4; row++) {
+      var rowEl = document.createElement("div");
+      rowEl.className = "row";
+
+      this._el.appendChild(rowEl);
+
+      for (var col = 0; col < 3; col++) {
+        var cell = new Cell({
+          row: row,
+          col: col
+        }, null);
+        this.cells.push(cell);
+        rowEl.appendChild(cell._el);
+      }
+    }
+  }
+
+  Board.prototype.render = function () {
+    this.cells.forEach(function (v) {
+      return v.render();
+    });
+  };
+
+  return Board;
+}();
+
+exports.Board = Board;
+
+var DeadZone =
+/** @class */
+function () {
+  function DeadZone(type) {
+    this.type = type;
+    this.cells = [];
+    this.deadzoneEl = document.getElementById(this.type + "_deadzone").querySelector(".card-body");
+
+    for (var col = 0; col < 4; col++) {
+      var cell = new Cell({
+        col: col,
+        row: 0
+      }, null);
+      this.cells.push(cell);
+      this.deadzoneEl.appendChild(cell._el);
+    }
+  }
+
+  DeadZone.prototype.put = function (piece) {
+    var emptyCell = this.cells.find(function (v) {
+      return v.getPiece() == null;
+    });
+    emptyCell.put(piece);
+    emptyCell.render();
+  };
+
+  DeadZone.prototype.render = function () {
+    this.cells.forEach(function (v) {
+      return v.render();
+    });
+  };
+
+  return DeadZone;
+}();
+
+exports.DeadZone = DeadZone;
+},{}],"src/Game.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Board_1 = require("./Board"); // named export (이름으로 내보내는 방법)
+
 
 var Game =
 /** @class */
 function () {
-  function Game() {}
+  function Game() {
+    this.board = new Board_1.Board();
+    this.upperDeadZone = new Board_1.DeadZone("upper");
+    this.lowerDeadZone = new Board_1.DeadZone("lower");
+    var boardContainer = document.querySelector(".board-container");
+
+    if (boardContainer.firstChild !== null) {
+      boardContainer.firstChild.remove();
+    } else {
+      console.log(boardContainer.firstChild, " error 발생");
+    }
+
+    boardContainer.appendChild(this.board._el);
+  }
 
   return Game;
 }();
 
 exports.Game = Game;
-},{}],"src/index.ts":[function(require,module,exports) {
+},{"./Board":"src/Board.ts"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+var bundleURL = null;
+
+function getBundleURLCached() {
+  if (!bundleURL) {
+    bundleURL = getBundleURL();
+  }
+
+  return bundleURL;
+}
+
+function getBundleURL() {
+  // Attempt to find the URL of the current script and use that as the base URL
+  try {
+    throw new Error();
+  } catch (err) {
+    var matches = ('' + err.stack).match(/(https?|file|ftp|chrome-extension|moz-extension):\/\/[^)\n]+/g);
+
+    if (matches) {
+      return getBaseURL(matches[0]);
+    }
+  }
+
+  return '/';
+}
+
+function getBaseURL(url) {
+  return ('' + url).replace(/^((?:https?|file|ftp|chrome-extension|moz-extension):\/\/.+)\/[^/]+$/, '$1') + '/';
+}
+
+exports.getBundleURL = getBundleURLCached;
+exports.getBaseURL = getBaseURL;
+},{}],"node_modules/parcel-bundler/src/builtins/css-loader.js":[function(require,module,exports) {
+var bundle = require('./bundle-url');
+
+function updateLink(link) {
+  var newLink = link.cloneNode();
+
+  newLink.onload = function () {
+    link.remove();
+  };
+
+  newLink.href = link.href.split('?')[0] + '?' + Date.now();
+  link.parentNode.insertBefore(newLink, link.nextSibling);
+}
+
+var cssTimeout = null;
+
+function reloadCSS() {
+  if (cssTimeout) {
+    return;
+  }
+
+  cssTimeout = setTimeout(function () {
+    var links = document.querySelectorAll('link[rel="stylesheet"]');
+
+    for (var i = 0; i < links.length; i++) {
+      if (bundle.getBaseURL(links[i].href) === bundle.getBundleURL()) {
+        updateLink(links[i]);
+      }
+    }
+
+    cssTimeout = null;
+  }, 50);
+}
+
+module.exports = reloadCSS;
+},{"./bundle-url":"node_modules/parcel-bundler/src/builtins/bundle-url.js"}],"node_modules/bootstrap/dist/css/bootstrap.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/styles/style.css":[function(require,module,exports) {
+var reloadCSS = require('_css_loader');
+
+module.hot.dispose(reloadCSS);
+module.hot.accept(reloadCSS);
+},{"_css_loader":"node_modules/parcel-bundler/src/builtins/css-loader.js"}],"src/index.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -142,8 +357,12 @@ Object.defineProperty(exports, "__esModule", {
 
 var Game_1 = require("./Game");
 
+require("bootstrap/dist/css/bootstrap.css");
+
+require("./styles/style.css");
+
 new Game_1.Game();
-},{"./Game":"src/Game.ts"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"./Game":"src/Game.ts","bootstrap/dist/css/bootstrap.css":"node_modules/bootstrap/dist/css/bootstrap.css","./styles/style.css":"src/styles/style.css"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -171,7 +390,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "60006" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50769" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
