@@ -170,25 +170,45 @@ exports.Cell = Cell;
 var Board =
 /** @class */
 function () {
-  function Board() {
+  function Board(upperPlayer, lowerPlayer) {
     this.cells = [];
     this._el = document.createElement("div");
+    this.map = new WeakMap();
     this._el.className = "board";
 
-    for (var row = 0; row < 4; row++) {
+    var _loop_1 = function _loop_1(row) {
       var rowEl = document.createElement("div");
       rowEl.className = "row";
 
-      this._el.appendChild(rowEl);
+      this_1._el.appendChild(rowEl);
 
-      for (var col = 0; col < 3; col++) {
+      var _loop_2 = function _loop_2(col) {
+        var piece = upperPlayer.getPieces().find(function (_a) {
+          var currentPosition = _a.currentPosition;
+          return currentPosition.col === col && currentPosition.row === row;
+        }) || lowerPlayer.getPieces().find(function (_a) {
+          var currentPosition = _a.currentPosition;
+          return currentPosition.col === col && currentPosition.row === row;
+        }); // console.log(piece);
+
         var cell = new Cell({
           row: row,
           col: col
-        }, null);
-        this.cells.push(cell);
+        }, piece);
+        this_1.map.set(cell._el, cell);
+        this_1.cells.push(cell);
         rowEl.appendChild(cell._el);
+      };
+
+      for (var col = 0; col < 3; col++) {
+        _loop_2(col);
       }
+    };
+
+    var this_1 = this;
+
+    for (var row = 0; row < 4; row++) {
+      _loop_1(row);
     }
   }
 
@@ -239,21 +259,286 @@ function () {
 }();
 
 exports.DeadZone = DeadZone;
-},{}],"src/Game.ts":[function(require,module,exports) {
+},{}],"src/images/lion.png":[function(require,module,exports) {
+module.exports = "/lion.0a55027b.png";
+},{}],"src/images/chicken.png":[function(require,module,exports) {
+module.exports = "/chicken.3d0d4a2d.png";
+},{}],"src/images/giraffe.png":[function(require,module,exports) {
+module.exports = "/giraffe.65af1a73.png";
+},{}],"src/images/elephant.png":[function(require,module,exports) {
+module.exports = "/elephant.c2e79833.png";
+},{}],"src/Piece.ts":[function(require,module,exports) {
+"use strict"; // typeScript에서는 image 경로를 모듈로 인식해서 error 발생된다.
+// global.d.ts로 type definition 을 정의할 수 있다.
+
+var __extends = this && this.__extends || function () {
+  var _extendStatics = function extendStatics(d, b) {
+    _extendStatics = Object.setPrototypeOf || {
+      __proto__: []
+    } instanceof Array && function (d, b) {
+      d.__proto__ = b;
+    } || function (d, b) {
+      for (var p in b) {
+        if (b.hasOwnProperty(p)) d[p] = b[p];
+      }
+    };
+
+    return _extendStatics(d, b);
+  };
+
+  return function (d, b) {
+    _extendStatics(d, b);
+
+    function __() {
+      this.constructor = d;
+    }
+
+    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+  };
+}();
+
+var __importDefault = this && this.__importDefault || function (mod) {
+  return mod && mod.__esModule ? mod : {
+    "default": mod
+  };
+};
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var lion_png_1 = __importDefault(require("./images/lion.png"));
+
+var chicken_png_1 = __importDefault(require("./images/chicken.png"));
+
+var giraffe_png_1 = __importDefault(require("./images/giraffe.png"));
+
+var elephant_png_1 = __importDefault(require("./images/elephant.png"));
+
+var Player_1 = require("./Player");
+
+var MoveResult =
+/** @class */
+function () {
+  function MoveResult(killedPiece) {
+    this.killedPiece = killedPiece;
+  }
+
+  MoveResult.prototype.getKilled = function () {
+    return this.killedPiece;
+  };
+
+  return MoveResult;
+}();
+
+exports.MoveResult = MoveResult;
+
+var DefaultPiece =
+/** @class */
+function () {
+  function DefaultPiece(ownerType, currentPosition) {
+    this.ownerType = ownerType;
+    this.currentPosition = currentPosition;
+  }
+
+  DefaultPiece.prototype.move = function (from, to) {
+    // 공동 로직, canMove에서 각각 로직 구현하도록 강제
+    if (!this.canMove(to.position)) {
+      throw new Error("can no move!");
+    }
+
+    var moveResult = new MoveResult(to.getPiece() != null ? to.getPiece() : null);
+    to.put(this);
+    from.put(null);
+    this.currentPosition = to.position;
+    return moveResult;
+  };
+
+  return DefaultPiece;
+}(); //각 동물별 움직이는 동작 정의(lion, elephant, giraffe, chicken)
+// image를 상대경로로 넣고, bundlinig을 할 때, 실제 번들링 된 후의 경로명을 parcel로 받아올 수 있다.
+
+
+var Lion =
+/** @class */
+function (_super) {
+  __extends(Lion, _super);
+
+  function Lion() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  Lion.prototype.canMove = function (pos) {
+    var canMove = pos.row === this.currentPosition.row + 1 && pos.col === this.currentPosition.col || pos.row === this.currentPosition.row - 1 && pos.col === this.currentPosition.col || pos.row === this.currentPosition.row && pos.col === this.currentPosition.col + 1 || pos.row === this.currentPosition.row && pos.col === this.currentPosition.col - 1 || pos.row === this.currentPosition.row + 1 && pos.col === this.currentPosition.col + 1 || pos.row === this.currentPosition.row + 1 && pos.col === this.currentPosition.col - 1 || pos.row === this.currentPosition.row - 1 && pos.col === this.currentPosition.col + 1 || pos.row === this.currentPosition.row - 1 && pos.col === this.currentPosition.col - 1;
+    return canMove;
+  };
+
+  Lion.prototype.render = function () {
+    return "<img class=\"piece " + this.ownerType + "\" src=\"" + lion_png_1.default + "\" width=\"90%\" height=\"90%\"/>";
+  };
+
+  return Lion;
+}(DefaultPiece);
+
+exports.Lion = Lion;
+
+var Elephant =
+/** @class */
+function (_super) {
+  __extends(Elephant, _super);
+
+  function Elephant() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  Elephant.prototype.canMove = function (pos) {
+    var canMove = pos.row === this.currentPosition.row + 1 && pos.col === this.currentPosition.col + 1 || pos.row === this.currentPosition.row + 1 && pos.col === this.currentPosition.col - 1 || pos.row === this.currentPosition.row - 1 && pos.col === this.currentPosition.col + 1 || pos.row === this.currentPosition.row - 1 && pos.col === this.currentPosition.col - 1;
+    return canMove;
+  };
+
+  Elephant.prototype.render = function () {
+    return "<img class=\"piece " + this.ownerType + "\" src=\"" + elephant_png_1.default + "\" width=\"90%\" height=\"90%\"/>";
+  };
+
+  return Elephant;
+}(DefaultPiece);
+
+exports.Elephant = Elephant;
+
+var Giraffe =
+/** @class */
+function (_super) {
+  __extends(Giraffe, _super);
+
+  function Giraffe() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  Giraffe.prototype.canMove = function (pos) {
+    var canMove = pos.row === this.currentPosition.row + 1 && pos.col === this.currentPosition.col || pos.row === this.currentPosition.row + 1 && pos.col === this.currentPosition.col || pos.row === this.currentPosition.row && pos.col === this.currentPosition.col + 1 || pos.row === this.currentPosition.row && pos.col === this.currentPosition.col - 1;
+    return canMove;
+  };
+
+  Giraffe.prototype.render = function () {
+    return "<img class=\"piece " + this.ownerType + "\" src=\"" + giraffe_png_1.default + "\" width=\"90%\" height=\"90%\"/>";
+  };
+
+  return Giraffe;
+}(DefaultPiece);
+
+exports.Giraffe = Giraffe;
+
+var Chicken =
+/** @class */
+function (_super) {
+  __extends(Chicken, _super);
+
+  function Chicken() {
+    return _super !== null && _super.apply(this, arguments) || this;
+  }
+
+  Chicken.prototype.canMove = function (pos) {
+    return this.currentPosition.row + (this.ownerType == Player_1.PlayerType.UPPER ? +1 : -1) === pos.row;
+  };
+
+  Chicken.prototype.render = function () {
+    return "<img class=\"piece " + this.ownerType + "\" src=\"" + chicken_png_1.default + "\" width=\"90%\" height=\"90%\"/>";
+  };
+
+  return Chicken;
+}(DefaultPiece);
+
+exports.Chicken = Chicken;
+},{"./images/lion.png":"src/images/lion.png","./images/chicken.png":"src/images/chicken.png","./images/giraffe.png":"src/images/giraffe.png","./images/elephant.png":"src/images/elephant.png","./Player":"src/Player.ts"}],"src/Player.ts":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var Board_1 = require("./Board"); // named export (이름으로 내보내는 방법)
+var Piece_1 = require("./Piece");
+
+var PlayerType;
+
+(function (PlayerType) {
+  PlayerType["UPPER"] = "UPPER";
+  PlayerType["LOWER"] = "LOWER";
+})(PlayerType = exports.PlayerType || (exports.PlayerType = {})); // readonly: 한번 쓰면 덮어씌워지지 않게 사용
+
+
+var Player =
+/** @class */
+function () {
+  function Player(type) {
+    this.type = type;
+
+    if (type === PlayerType.UPPER) {
+      this.pieces = [new Piece_1.Giraffe(PlayerType.UPPER, {
+        row: 0,
+        col: 0
+      }), new Piece_1.Lion(PlayerType.UPPER, {
+        row: 0,
+        col: 1
+      }), new Piece_1.Elephant(PlayerType.UPPER, {
+        row: 0,
+        col: 2
+      }), new Piece_1.Chicken(PlayerType.UPPER, {
+        row: 1,
+        col: 1
+      })];
+    } else {
+      this.pieces = [new Piece_1.Giraffe(PlayerType.LOWER, {
+        row: 3,
+        col: 2
+      }), new Piece_1.Lion(PlayerType.LOWER, {
+        row: 3,
+        col: 1
+      }), new Piece_1.Elephant(PlayerType.LOWER, {
+        row: 3,
+        col: 0
+      }), new Piece_1.Chicken(PlayerType.LOWER, {
+        row: 2,
+        col: 1
+      })];
+    }
+  }
+
+  Player.prototype.getPieces = function () {
+    return this.pieces;
+  };
+
+  return Player;
+}();
+
+exports.Player = Player;
+},{"./Piece":"src/Piece.ts"}],"src/Game.ts":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var Board_1 = require("./Board");
+
+var Player_1 = require("./Player");
+
+var Piece_1 = require("./Piece"); // import "./Piece";
+// named export (이름으로 내보내는 방법)
 
 
 var Game =
 /** @class */
 function () {
   function Game() {
-    this.board = new Board_1.Board();
+    var _this = this;
+
+    this.turn = 0;
+    this.gemeInfoEl = document.querySelector(".alert");
+    this.state = "STARTED"; // plyer가 잡은 말 정보
+
+    this.upperPlayer = new Player_1.Player(Player_1.PlayerType.UPPER);
+    this.lowerPlayer = new Player_1.Player(Player_1.PlayerType.LOWER);
+    this.board = new Board_1.Board(this.upperPlayer, this.lowerPlayer);
     this.upperDeadZone = new Board_1.DeadZone("upper");
     this.lowerDeadZone = new Board_1.DeadZone("lower");
     var boardContainer = document.querySelector(".board-container");
@@ -261,17 +546,119 @@ function () {
     if (boardContainer.firstChild !== null) {
       boardContainer.firstChild.remove();
     } else {
-      console.log(boardContainer.firstChild, " error 발생");
+      // 강사님 코드에서는 null처리를 하지 않아도, 초기화가 되어있는 듯한데.. 어디가 잘못된건지 못찾겠어서
+      // 일단 if else로 처리를 해두었다.(error처리)
+      console.log(boardContainer.firstChild);
     }
 
     boardContainer.appendChild(this.board._el);
-  }
+    this.currentPlayer = this.upperPlayer;
+    this.board.render();
+    this.renderInfo();
+
+    this.board._el.addEventListener("click", function (e) {
+      if (_this.state === "END") {
+        return false;
+      } // type guard, e.target은 반드시 HTML Element일 것.
+
+
+      if (e.target instanceof HTMLElement) {
+        var cellEl = void 0;
+
+        if (e.target.classList.contains("cell")) {
+          cellEl = e.target;
+        } else if (e.target.classList.contains("piece")) {
+          cellEl = e.target.parentElement;
+        } else {
+          return false;
+        }
+
+        var cell = _this.board.map.get(cellEl);
+
+        if (_this.isCurrentUserPiece(cell)) {
+          _this.selected(cell);
+
+          return false;
+        }
+
+        if (_this.selectedCell) {
+          _this.move(cell);
+
+          _this.changeTurn();
+        }
+      }
+    });
+  } // 현재 유저 정보
+
+
+  Game.prototype.isCurrentUserPiece = function (cell) {
+    return cell != null && cell.getPiece() != null && cell.getPiece().ownerType === this.currentPlayer.type;
+  }; // 실제 셀을 선택하는 함수
+
+
+  Game.prototype.selected = function (cell) {
+    if (cell.getPiece() === null) {
+      return;
+    }
+
+    if (cell.getPiece().ownerType !== this.currentPlayer.type) {
+      return;
+    }
+
+    if (this.selectedCell) {
+      this.selectedCell.deactive();
+      this.selectedCell.render();
+    }
+
+    this.selectedCell = cell;
+    cell.active();
+    cell.render();
+  }; //움직였을 때, 로직
+
+
+  Game.prototype.move = function (cell) {
+    this.selectedCell.deactive();
+    var killed = this.selectedCell.getPiece().move(this.selectedCell, cell).getKilled();
+    this.selectedCell = cell;
+
+    if (killed) {
+      if (killed.ownerType === Player_1.PlayerType.UPPER) {
+        this.lowerDeadZone.put(killed);
+      } else {
+        this.upperDeadZone.put(killed);
+      }
+
+      if (killed instanceof Piece_1.Lion) {
+        this.state = "END";
+      }
+    }
+  }; //   ?를 씀으로써, 매개변수가 있을수도, 없을수도 없음을 알려줌
+
+
+  Game.prototype.renderInfo = function (extraMessage) {
+    this.gemeInfoEl.innerHTML = "#" + this.turn + "\uD134 " + this.currentPlayer.type + " \uCC28\uB840 " + (extraMessage ? "| " + extraMessage : "");
+  };
+
+  Game.prototype.changeTurn = function () {
+    this.selectedCell.deactive();
+    this.selectedCell = null;
+
+    if (this.state === "END") {
+      this.renderInfo("END!");
+    } else {
+      this.turn += 1;
+      this.currentPlayer = this.currentPlayer === this.lowerPlayer ? this.upperPlayer : this.lowerPlayer;
+      this.renderInfo();
+    }
+
+    this.board.render();
+  };
 
   return Game;
 }();
 
 exports.Game = Game;
-},{"./Board":"src/Board.ts"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
+},{"./Board":"src/Board.ts","./Player":"src/Player.ts","./Piece":"src/Piece.ts"}],"node_modules/parcel-bundler/src/builtins/bundle-url.js":[function(require,module,exports) {
 var bundleURL = null;
 
 function getBundleURLCached() {
@@ -390,7 +777,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "50769" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "57088" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
